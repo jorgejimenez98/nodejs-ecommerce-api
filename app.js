@@ -1,10 +1,14 @@
 const express = require("express");
+require("dotenv/config");
+
 const app = express();
 
 const bodyParser = require("body-parser");
-app.use(bodyParser.json());
+const morgan = require("morgan");
 
-require("dotenv/config");
+// Middlerware
+app.use(bodyParser.json()); // Read data from frontend
+app.use(morgan("tiny")); // Log API method details
 
 const port = process.env.PORT || 5000;
 
