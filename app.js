@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+const api = process.env.API_URL;
+
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
@@ -10,6 +12,11 @@ app.use(morgan("tiny")); // Log API method details
 
 require("dotenv/config");
 require("./db");
+
+// Routes Imports
+const productRoutes = require("./routers/productRoutes");
+// ADD routes to APP
+app.use(`${api}/products`, productRoutes);
 
 const port = process.env.PORT || 5000;
 
