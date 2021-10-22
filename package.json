@@ -1,0 +1,24 @@
+{
+  "name": "ecommerce-api",
+  "version": "1.0.0",
+  "description": "this is a practice",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jorgejimenez98/nodejs-ecommerce-api.git"
+  },
+  "author": "Jorge Jimenez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jorgejimenez98/nodejs-ecommerce-api/issues"
+  },
+  "homepage": "https://github.com/jorgejimenez98/nodejs-ecommerce-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.14"
+  }
+}
