@@ -4,6 +4,7 @@ const app = express();
 // Dependencies
 require("dotenv/config");
 require("./db");
+const cors = require("cors");
 
 //Routes Imports
 const productsRoutes = require("./routes/productRoutes");
@@ -15,6 +16,8 @@ const orderRoutes = require("./routes/orderRoutes");
 app.use(require("morgan")("tiny")); // Log API method details
 app.use(express.json()); // Read data from frontend
 app.use(express.text());
+app.use(cors());
+app.options("*", cors());
 
 // ADD ROUTES TO APP
 app.use("/api/users", userRoutes);
