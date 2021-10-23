@@ -18,11 +18,12 @@
   },
   "homepage": "https://github.com/jorgejimenez98/nodejs-ecommerce-api#readme",
   "dependencies": {
-    "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongoose": "^6.0.12",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.14"
+    "nodemon": "^2.0.14",
+    "routes": "^2.1.0",
+    "tslib": "^2.3.1"
   }
 }
