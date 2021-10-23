@@ -18,9 +18,9 @@ router.post("/", async (req, res) => {
 
   product
     .save()
-    .then((createdProduct) => {
+    .then((createdProduct => {
       res.status(201).json(createdProduct);
-    })
+    }))
     .catch((error) => {
       res.status(500).json({
         error: error,
