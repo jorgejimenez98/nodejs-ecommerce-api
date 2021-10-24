@@ -25,7 +25,10 @@ router.post("/login", async (req, res) => {
     // Return User and token Response
     return res
       .status(200)
-      .send({ user: { email: user.email, name: user.name }, token });
+      .send({
+        user: { email: user.email, name: user.name, isAdmin: user.isAdmin },
+        token,
+      });
   }
   // Send Error Login Message
   res.status(400).send("Incorrect Password");
