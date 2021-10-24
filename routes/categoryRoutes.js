@@ -21,3 +21,22 @@ router.post("/", async (req, res) => {
   if (!category) res.status(404).send("Error to create category");
   res.send(category);
 });
+
+router.delete("/:id", async (req, res) => {
+  const id = req.params.id;
+  Category.findByIdAndRemove(id)
+    .then((delCat) => {
+      if (delCat)
+        return res
+          .status(200)
+          .json({ success: true, message: "Category Deleted" });
+      else {
+        return res
+          .status(404)
+          .json({ success: false, message: "Category not Found" });
+      }
+    })
+    .catch((error) => {
+      return res.status(404).json({ success: false, error: error });
+    });
+});
