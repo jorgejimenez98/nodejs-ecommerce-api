@@ -6,6 +6,9 @@ require("dotenv/config");
 require("./db");
 const cors = require("cors");
 
+// Helpers
+const authJWT = require("./helpers/jwt");
+
 //Routes Imports
 const productsRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -15,6 +18,7 @@ const orderRoutes = require("./routes/orderRoutes");
 // Middlerware Settings
 app.use(require("morgan")("tiny")); // Log API method details
 app.use(express.json()); // Read data from frontend
+app.use(authJWT()); // Protect API Authentication
 app.use(cors());
 app.options("*", cors());
 
