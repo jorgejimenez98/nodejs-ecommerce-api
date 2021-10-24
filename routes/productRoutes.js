@@ -118,4 +118,13 @@ router.get("/get/count", async (req, res) => {
   res.status(200).send({ productsCount: productCount });
 });
 
+// GET FEATURED PRODUCTS
+router.get("/get/featured/:count", async (req, res) => {
+  // .limit is to set a max of products
+  const count = req.params.count ? req.params.count : 0;
+  const productsList = await Product.find({ isFeatured: true }).limit(+count);
+  if (!productsList) res.status(500).json({ success: false });
+  res.status(200).send(productsList);
+});
+
 module.exports = router;
