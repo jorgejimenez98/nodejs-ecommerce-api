@@ -7,6 +7,14 @@ function authJWT() {
   return expressJwt({
     secret,
     algorithms: ["HS256"],
+  }).unless({
+    path: [
+      // Paths that does not need to be authenticated
+      { url: /\/api\/products(.*)/, methods: ["GET", "OPTIONS"] },
+      { url: /\/api\/categories(.*)/, methods: ["GET", "OPTIONS"] },
+      `/users/login`,
+      `/users/register`,
+    ],
   });
 }
 
