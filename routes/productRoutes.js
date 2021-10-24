@@ -5,7 +5,8 @@ const router = express.Router();
 
 // GET LIST OF PRODUCTS
 router.get("/", async (req, res) => {
-  const productList = await Product.find();
+  // .select is for create the mini serializer
+  const productList = await Product.find().select("_id name image");
   if (!productList) res.status(500).json({ success: false });
   res.send(productList);
 });
