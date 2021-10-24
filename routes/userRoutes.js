@@ -23,12 +23,10 @@ router.post("/login", async (req, res) => {
       { expiresIn: "1d" } // Time to expire d|m|y w-week
     );
     // Return User and token Response
-    return res
-      .status(200)
-      .send({
-        user: { email: user.email, name: user.name, isAdmin: user.isAdmin },
-        token,
-      });
+    return res.status(200).send({
+      user: { email: user.email, name: user.name, isAdmin: user.isAdmin },
+      token,
+    });
   }
   // Send Error Login Message
   res.status(400).send("Incorrect Password");
@@ -76,6 +74,13 @@ router.get("/:id", async (req, res) => {
   const user = await User.findById(req.params.id).select("-passwordHash");
   if (!user) res.status(404).json({ success: false, message: "Not found" });
   res.status(200).send(user);
+});
+
+// GET USERS COUNT
+router.get("/get/count", async (req, res) => {
+  const usersCount = await User.countDocuments({});
+  if (!usersCount) res.status(500).json({ success: false });
+  res.status(200).send({ productsCount: usersCount });
 });
 
 module.exports = router;
