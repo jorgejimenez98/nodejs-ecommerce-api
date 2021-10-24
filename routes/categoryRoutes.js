@@ -40,3 +40,9 @@ router.delete("/:id", async (req, res) => {
       return res.status(404).json({ success: false, error: error });
     });
 });
+
+router.get("/:id", async (req, res) => {
+  const category = await Category.findById(req.params.id);
+  if (!category) res.status(404).json({ success: false, message: "Not found" });
+  res.status(200).send(category);
+});
