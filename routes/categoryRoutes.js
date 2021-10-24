@@ -49,4 +49,20 @@ router.get("/:id", async (req, res) => {
   res.status(200).send(category);
 });
 
+// UPDATE CATEGORY
+router.put("/:id", async (req, res) => {
+  const data = JSON.parse(req.body);
+  const category = await Category.findByIdAndUpdate(
+    req.params.id,
+    {
+      name: data.name,
+      icon: data.icon,
+      color: data.color,
+    },
+    { new: true } // Return new values
+  );
+  if (!category) res.status(404).send("Category not Updated");
+  res.status(200).send(category);
+});
+
 module.exports = router;
