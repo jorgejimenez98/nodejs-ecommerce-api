@@ -2,14 +2,14 @@ const Category = require("../models/category");
 const express = require("express");
 const router = express.Router();
 
+// GET LIST
 router.get(`/`, async (req, res) => {
   const categoryList = await Category.find();
   if (!categoryList) res.status(500).json({ success: false });
   res.status(200).send(categoryList);
 });
 
-module.exports = router;
-
+// ADD CATEGORY
 router.post("/", async (req, res) => {
   const data = JSON.parse(req.body);
   let category = new Category({
@@ -22,6 +22,7 @@ router.post("/", async (req, res) => {
   res.send(category);
 });
 
+// DELETE CATEGORY
 router.delete("/:id", async (req, res) => {
   const id = req.params.id;
   Category.findByIdAndRemove(id)
@@ -41,8 +42,11 @@ router.delete("/:id", async (req, res) => {
     });
 });
 
+// GET A CATEGORY DETAILS
 router.get("/:id", async (req, res) => {
   const category = await Category.findById(req.params.id);
   if (!category) res.status(404).json({ success: false, message: "Not found" });
   res.status(200).send(category);
 });
+
+module.exports = router;
