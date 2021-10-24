@@ -40,7 +40,8 @@ router.post("/", async (req, res) => {
 
 // GET A PRODUCT DETAILS
 router.get("/:id", async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  // .populate is for show the category serializer intead of the ID
+  const product = await Product.findById(req.params.id).populate("category");
   if (!product) res.status(404).json({ success: false, message: "Not found" });
   res.status(200).send(product);
 });
