@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcryptjs");
 
 // GET USERS LIST
 router.get(`/`, async (req, res) => {
@@ -12,11 +13,12 @@ router.get(`/`, async (req, res) => {
 // REGISTER USER
 router.post("/", async (req, res) => {
   const data = req.body;
-  console.log(data)
+
+  // create user
   let user = new User({
     name: data.name,
     email: data.email,
-    passwordHash: data.passwordHash,
+    passwordHash: bcrypt.hashSync(data.password, 10),
     phone: data.phone,
     isAdmin: data.isAdmin,
     apartment: data.apartment,
@@ -25,6 +27,8 @@ router.post("/", async (req, res) => {
     city: data.city,
     country: data.country,
   });
+
+  // return user
   user = await user.save();
   if (!user) res.status(404).send("Error to create user");
   res.send(user);
