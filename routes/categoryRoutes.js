@@ -1,6 +1,6 @@
-const Category = require("../models/category");
 const express = require("express");
 const router = express.Router();
+const Category = require("../models/category");
 
 // GET LIST
 router.get(`/`, async (req, res) => {
@@ -11,7 +11,7 @@ router.get(`/`, async (req, res) => {
 
 // ADD CATEGORY
 router.post("/", async (req, res) => {
-  const data = JSON.parse(req.body);
+  const data = req.body;
   let category = new Category({
     name: data.name,
     icon: data.icon,
@@ -51,7 +51,7 @@ router.get("/:id", async (req, res) => {
 
 // UPDATE CATEGORY
 router.put("/:id", async (req, res) => {
-  const data = JSON.parse(req.body);
+  const data = req.body;
   const category = await Category.findByIdAndUpdate(
     req.params.id,
     {
