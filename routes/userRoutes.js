@@ -4,7 +4,7 @@ const router = express.Router();
 
 // GET USERS LIST
 router.get(`/`, async (req, res) => {
-  const userList = await User.find();
+  const userList = await User.find().select("id name email isAdmin");
   if (!userList) res.status(500).json({ success: false });
   res.send(userList);
 });
