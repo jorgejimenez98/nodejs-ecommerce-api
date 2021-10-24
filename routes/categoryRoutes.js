@@ -9,3 +9,15 @@ router.get(`/`, async (req, res) => {
 });
 
 module.exports = router;
+
+router.post("/", async (req, res) => {
+  const data = JSON.parse(req.body);
+  let category = new Category({
+    name: data.name,
+    icon: data.icon,
+    color: data.color,
+  });
+  category = await category.save();
+  if (!category) res.status(404).send("Error to create category");
+  res.send(category);
+});
