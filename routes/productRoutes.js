@@ -46,4 +46,34 @@ router.get("/:id", async (req, res) => {
   res.status(200).send(product);
 });
 
+// UPDATE PRODUCT
+router.put("/:id", async (req, res) => {
+  // Validate Category
+  const category = await Category.findById(req.body.category);
+  if (!category) return res.status(400).send("Invalid Category");
+
+  // UPDATE PRODUCT
+  const product = await Product.findByIdAndUpdate(
+    req.params.id,
+    {
+      name: req.body.name,
+      description: req.body.description,
+      richDescription: req.body.richDescription,
+      image: req.body.image,
+      brand: req.body.brand,
+      price: req.body.price,
+      category: req.body.category,
+      countInStock: req.body.countInStock,
+      rating: req.body.rating,
+      numReviews: req.body.numReviews,
+      isFeatured: req.body.isFeatured,
+    },
+    { new: true } // Return new updated values
+  ).populate("category");
+
+  // RETURN RESPONSE
+  if (!product) res.status(404).send("Category not Updated");
+  res.status(200).send(product);
+});
+
 module.exports = router;
