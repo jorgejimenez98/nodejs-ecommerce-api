@@ -6,8 +6,13 @@ const mongoose = require("mongoose");
 
 // GET LIST OF PRODUCTS
 router.get("/", async (req, res) => {
-  // .select is for create the mini serializer
-  const productList = await Product.find().select("_id name image");
+  // Filter Section /api/products?categories=12312,12312
+  let filter = {};
+  if (req.query.categories) {
+    filter = { categories: req.query.categories.split(",") };
+  }
+  // GET TABLE .select is for create the mini serializer
+  const productList = await Product.find(filter).select("_id name image");
   if (!productList) res.status(500).json({ success: false });
   res.send(productList);
 });
