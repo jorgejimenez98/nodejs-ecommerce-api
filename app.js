@@ -15,7 +15,6 @@ const orderRoutes = require("./routes/orderRoutes");
 // Middlerware Settings
 app.use(require("morgan")("tiny")); // Log API method details
 app.use(express.json()); // Read data from frontend
-app.use(express.text());
 app.use(cors());
 app.options("*", cors());
 
