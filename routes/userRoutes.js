@@ -18,6 +18,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       {
         userId: user.id,
+        isAdmin: user.isAdmin,
       },
       process.env.TOKEN_SECRET, // Secret Key
       { expiresIn: "1d" } // Time to expire d|m|y w-week
@@ -80,7 +81,7 @@ router.get("/:id", async (req, res) => {
 router.get("/get/count", async (req, res) => {
   const usersCount = await User.countDocuments({});
   if (!usersCount) res.status(500).json({ success: false });
-  res.status(200).send({ productsCount: usersCount });
+  res.status(200).send({ usersCount: usersCount });
 });
 
 module.exports = router;
