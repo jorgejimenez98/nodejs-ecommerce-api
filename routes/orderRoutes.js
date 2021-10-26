@@ -50,4 +50,18 @@ router.post("/", async (req, res) => {
   if (!order) res.status(404).send("Error to create order");
   res.send(order);
 });
+
+// GET ORDERS DETAILS
+router.get(`/:orderId`, async (req, res) => {
+  const orderId = req.params.orderId;
+  const order = await Order.findById(orderId)
+    .populate("user", ["name", "email"])
+    .populate({
+      path: "orderItems",
+      populate: { path: "product", populate: "category" },
+    });
+  if (!order) res.status(500).json({ success: false });
+  res.send(order);
+});
+
 module.exports = router;
