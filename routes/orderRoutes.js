@@ -64,4 +64,16 @@ router.get(`/:orderId`, async (req, res) => {
   res.send(order);
 });
 
+// UPDATE ORDER
+router.put("/:id", async (req, res) => {
+  const data = req.body;
+  const order = await Order.findByIdAndUpdate(
+    req.params.id,
+    { status: data.status },
+    { new: true } // Return new values
+  );
+  if (!order) res.status(404).send("Order not Updated");
+  res.status(200).send(order);
+});
+
 module.exports = router;
