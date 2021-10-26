@@ -118,4 +118,16 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+// GET TOTAL SALES
+router.get("/get/totalSales", async (req, res) => {
+  // Calculate all Total Pirces from Database
+  const totalSales = await Order.aggregate([
+    { $group: { _id: null, totalSales: { $sum: "$totalPrice" } } },
+  ]);
+
+  // Return all total Prices
+  if (!totalSales) res.status(400).send("Order Sales not generated");
+  res.status(200).send({ totalSales: totalSales.pop().totalSales });
+});
+
 module.exports = router;
