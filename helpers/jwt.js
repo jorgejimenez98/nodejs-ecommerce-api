@@ -11,6 +11,7 @@ function authJWT() {
   }).unless({
     path: [
       // Paths that does not need to be authenticated
+      { url: /\/public\/uploads(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/api\/products(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/api\/categories(.*)/, methods: ["GET", "OPTIONS"] },
       "/api/users/login",
