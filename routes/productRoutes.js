@@ -3,6 +3,21 @@ const Category = require("../models/category");
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const multer = require("multer");
+
+// Multer Upload Images Settings
+// https://github.com/expressjs/multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "/tmp/my-uploads");
+  },
+  filename: function (req, file, cb) {
+    const filename = field.originalname.replace(" ", "-");
+    cb(null, filename + "-" + Date.now());
+  },
+});
+
+const uploadOptions = multer({ storage: storage });
 
 // GET LIST OF PRODUCTS
 router.get("/", async (req, res) => {
@@ -18,17 +33,21 @@ router.get("/", async (req, res) => {
 });
 
 // CREATE PRODUCT
-router.post("/", async (req, res) => {
+router.post("/", uploadOptions.single("image"), async (req, res) => {
   // Validate Category
   const category = await Category.findById(req.body.category);
   if (!category) return res.status(400).send("Invalid Category");
+
+  // File Settings
+  const fileName = req.file.fieldname;
+  const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
 
   // CREATE Product
   let product = new Product({
     name: req.body.name,
     description: req.body.description,
     richDescription: req.body.richDescription,
-    image: req.body.image,
+    image: `${basePath}${fileName}`,
     brand: req.body.brand,
     price: req.body.price,
     category: req.body.category,
@@ -117,7 +136,6 @@ router.delete("/:id", async (req, res) => {
 
 // GET PRODUCTS COUNT
 router.get("/get/count", async (req, res) => {
-  console.log("AAAA");
   const productCount = await Product.countDocuments({});
   if (!productCount) res.status(500).json({ success: false });
   res.status(200).send({ productsCount: productCount });
