@@ -23,6 +23,7 @@ app.use(cors());
 app.options("*", cors());
 app.use(authJWT()); // Protect API Authentication
 app.use(errorHandler);
+app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
 
 // ADD ROUTES TO APP
 app.use("/api/users", userRoutes);
