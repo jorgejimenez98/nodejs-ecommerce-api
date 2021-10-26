@@ -107,6 +107,7 @@ router.delete("/:id", async (req, res) => {
     });
 });
 
+// REGISTER USER
 router.post("/register", async (req, res) => {
   let user = new User({
     name: req.body.name,
