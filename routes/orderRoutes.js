@@ -5,7 +5,9 @@ const router = express.Router();
 
 // GET LIST OF ORDERS
 router.get(`/`, async (req, res) => {
-  const orderList = await Order.find();
+  const orderList = await Order.find()
+    .populate("user", ["name", "email"])
+    .sort("dateOrdered");
   if (!orderList) res.status(500).json({ success: false });
   res.send(orderList);
 });
@@ -27,7 +29,7 @@ router.post("/", async (req, res) => {
   );
   // Await orderItems Id from Promise
   const orderItemsIdsResolved = await orderItemsIds;
-    
+
   // Create Order
   let order = new Order({
     orderItems: orderItemsIdsResolved,
