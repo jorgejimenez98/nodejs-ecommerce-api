@@ -84,4 +84,27 @@ router.get("/get/count", async (req, res) => {
   res.status(200).send({ usersCount: usersCount });
 });
 
+// DELETE USER
+router.delete("/:id", async (req, res) => {
+  const id = req.params.id;
+  // Valdate ID
+  if (!mongoose.isValidObjectId(id)) {
+    return res.status(404).send("Invalid USER ID");
+  }
+  // DELETE USER
+  User.findByIdAndRemove(id)
+    .then((deletedUser) => {
+      if (deletedUser)
+        return res.status(200).json({ success: true, message: "User Deleted" });
+      else {
+        return res
+          .status(404)
+          .json({ success: false, message: "User not Found" });
+      }
+    })
+    .catch((error) => {
+      return res.status(404).json({ success: false, error: error });
+    });
+});
+
 module.exports = router;
