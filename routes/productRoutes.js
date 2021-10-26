@@ -7,13 +7,26 @@ const multer = require("multer");
 
 // Multer Upload Images Settings
 // https://github.com/expressjs/multer
+
+const FILE_TYPE_MAP = {
+  "image/png": "png",
+  "image/jpeg": "jpeg",
+  "image/jpg": "jpg",
+};
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "/tmp/my-uploads");
+    const isValid = FILE_TYPE_MAP[file.mimetype];
+    let uploadError = new Error("Image Image Type");
+    if (isValid) {
+      uploadError = null;
+    }
+    cb(uploadError, "public/uploads");
   },
   filename: function (req, file, cb) {
-    const filename = field.originalname.replace(" ", "-");
-    cb(null, filename + "-" + Date.now());
+    const filename = file.originalname.replace(" ", "-");
+    const extension = FILE_TYPE_MAP[file.mimetype];
+    cb(null, `${filename}-${Date.now()}.${extension}`);
   },
 });
 
@@ -39,7 +52,7 @@ router.post("/", uploadOptions.single("image"), async (req, res) => {
   if (!category) return res.status(400).send("Invalid Category");
 
   // File Settings
-  const fileName = req.file.fieldname;
+  const fileName = req.file.filename;
   const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
 
   // CREATE Product
