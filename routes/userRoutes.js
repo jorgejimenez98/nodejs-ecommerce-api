@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 // LOGIN USER
 router.post("/login", async (req, res) => {
@@ -15,14 +14,7 @@ router.post("/login", async (req, res) => {
   // Check if Password is correct
   if (bcrypt.compareSync(password, user.passwordHash)) {
     // Generate User Token
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        isAdmin: user.isAdmin,
-      },
-      process.env.TOKEN_SECRET, // Secret Key
-      { expiresIn: "1d" } // Time to expire d|m|y w-week
-    );
+    const token = user.generateJWT();
     // Return User and token Response
     return res.status(200).send({
       user: { email: user.email, name: user.name, isAdmin: user.isAdmin },
