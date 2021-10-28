@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -8,6 +9,9 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    match: [/\S+@\S+\.\S+/, "Email is invalid"],
+    unique: true,
+    index: true,
   },
   passwordHash: {
     type: String,
@@ -42,6 +46,8 @@ const userSchema = new mongoose.Schema({
     default: "",
   },
 });
+
+userSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
 userSchema.virtual("id").get(function () {
   return this._id.toHexString();
