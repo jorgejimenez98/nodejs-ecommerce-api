@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
-const uniqueValidator = require('mongoose-unique-validator');
+const uniqueValidator = require("mongoose-unique-validator");
+const jwt = require("jsonwebtoken");
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -47,16 +48,28 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.plugin(uniqueValidator, {message: 'is already taken.'});
+UserSchema.plugin(uniqueValidator, { message: "is already taken." });
 
-userSchema.virtual("id").get(function () {
+UserSchema.virtual("id").get(function () {
   return this._id.toHexString();
 });
 
-userSchema.set("toJSON", {
+UserSchema.set("toJSON", {
   virtuals: true,
 });
 
-const User = mongoose.model("User", userSchema);
-exports.userSchema = userSchema;
+// Methods
+// Generate Token
+UserSchema.methods.generateJWT = function () {
+  return jwt.sign(
+    {
+      userId: this.id,
+      isAdmin: this.isAdmin,
+    },
+    process.env.TOKEN_SECRET, // Secret Key
+    { expiresIn: "1d" } // Time to expire d|m|y w-week
+  );
+};
+
+const User = mongoose.model("User", UserSchema);
 module.exports = User;
