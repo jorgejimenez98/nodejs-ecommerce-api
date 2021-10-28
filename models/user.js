@@ -82,5 +82,10 @@ UserSchema.methods.set_passwordHash = function (password) {
   this.passwordHash = bcrypt.hashSync(password, 10);
 };
 
+// GET USER TO AUTH JSON
+UserSchema.methods.toAuthJson = function () {
+  return { email: this.email, name: this.name, isAdmin: this.isAdmin };
+};
+
 const User = mongoose.model("User", UserSchema);
 module.exports = User;
