@@ -12,7 +12,7 @@ router.post("/login", async (req, res) => {
   // Check if user exist
   if (!user) res.status(404).send("User not found");
   // Check if Password is correct
-  if (bcrypt.compareSync(password, user.passwordHash)) {
+  if (user.checkPassword(password)) {
     // Generate User Token
     const token = user.generateJWT();
     // Return User and token Response
