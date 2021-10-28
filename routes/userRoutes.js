@@ -41,7 +41,6 @@ router.post("/", async (req, res) => {
     let user = new User({
       name: data.name,
       email: data.email,
-      passwordHash: bcrypt.hashSync(data.password, 10),
       phone: data.phone,
       isAdmin: data.isAdmin,
       apartment: data.apartment,
@@ -50,6 +49,9 @@ router.post("/", async (req, res) => {
       city: data.city,
       country: data.country,
     });
+
+    // Set password
+    user.set_passwordHash(data.password);
 
     // return user
     user = await user.save();
