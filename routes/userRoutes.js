@@ -42,26 +42,30 @@ router.get(`/`, async (req, res) => {
 
 // REGISTER USER
 router.post("/", async (req, res) => {
-  const data = req.body;
+  try {
+    const data = req.body;
 
-  // create user
-  let user = new User({
-    name: data.name,
-    email: data.email,
-    passwordHash: bcrypt.hashSync(data.password, 10),
-    phone: data.phone,
-    isAdmin: data.isAdmin,
-    apartment: data.apartment,
-    zip: data.zip,
-    street: data.street,
-    city: data.city,
-    country: data.country,
-  });
+    // create user
+    let user = new User({
+      name: data.name,
+      email: data.email,
+      passwordHash: bcrypt.hashSync(data.password, 10),
+      phone: data.phone,
+      isAdmin: data.isAdmin,
+      apartment: data.apartment,
+      zip: data.zip,
+      street: data.street,
+      city: data.city,
+      country: data.country,
+    });
 
-  // return user
-  user = await user.save();
-  if (!user) res.status(404).send("Error to create user");
-  res.send(user);
+    // return user
+    user = await user.save();
+    if (!user) res.status(404).send("Error to create user");
+    res.send(user);
+  } catch (error) {
+    res.status(404).send({ detail: error.message });
+  }
 });
 
 // GET A USER DETAILS
