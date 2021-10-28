@@ -16,10 +16,7 @@ router.post("/login", async (req, res) => {
     // Generate User Token
     const token = user.generateJWT();
     // Return User and token Response
-    return res.status(200).send({
-      user: { email: user.email, name: user.name, isAdmin: user.isAdmin },
-      token,
-    });
+    return res.status(200).send({ user: user.toAuthJson(), token });
   }
   // Send Error Login Message
   res.status(400).send("Incorrect Password");
