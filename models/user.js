@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -69,6 +70,11 @@ UserSchema.methods.generateJWT = function () {
     process.env.TOKEN_SECRET, // Secret Key
     { expiresIn: "1d" } // Time to expire d|m|y w-week
   );
+};
+
+// Check Password
+UserSchema.methods.checkPassword = function (password) {
+  return bcrypt.compareSync(password, this.passwordHash);
 };
 
 const User = mongoose.model("User", UserSchema);
